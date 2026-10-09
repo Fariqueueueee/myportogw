@@ -38,8 +38,7 @@ function SkillsScreen() {
 
       <header className="skills-hero">
         <div className="skills-hero__copy">
-          <p className="graphic-label">Technical arsenal / Editable starter data</p>
-          <p>Grouped by the work they enable—not reduced to arbitrary scores.</p>
+
         </div>
         <StaggeredText
           id="skills-title"
@@ -81,9 +80,6 @@ function SkillsScreen() {
         <SkillGroup group={activeGroup} />
       </div>
 
-      <p className="skills-screen__note">
-        Categories are intentionally plain-language and data-driven, ready to evolve with the portfolio.
-      </p>
     </section>
   )
 }

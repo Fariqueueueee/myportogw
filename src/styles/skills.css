@@ -171,8 +171,9 @@
 
 .skill-detail {
   display: grid;
-  grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: var(--space-4);
+  align-items: start;
   padding: clamp(1.5rem, 4vw, 3.5rem);
   color: var(--color-ink);
   background: var(--color-paper);
@@ -186,20 +187,22 @@
 
 .skill-detail__intro {
   display: grid;
-  grid-template-columns: auto 1fr;
+  min-width: 0;
+  grid-template-columns: clamp(3.75rem, 5vw, 5rem) minmax(0, 1fr);
   align-content: start;
-  gap: var(--space-2);
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
 }
 
 .skill-detail__intro > span {
   color: var(--color-red);
   font-family: var(--font-display);
-  font-size: clamp(4rem, 8vw, 8rem);
+  font-size: clamp(3.75rem, 5vw, 5rem);
   line-height: 0.72;
 }
 
 .skill-detail__intro > div {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 0.8rem;
 }
@@ -207,9 +210,10 @@
 .skill-detail__intro h2 {
   max-width: 10ch;
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5vw, 5.4rem);
+  font-size: clamp(2.6rem, 3.6vw, 4.8rem);
   line-height: 0.82;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .skill-detail__intro > div > p:last-child {
@@ -219,6 +223,7 @@
 
 .skill-detail__list {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 0.65rem;
   margin: 0;
@@ -262,9 +267,11 @@
 }
 
 .skill-detail__list strong {
+  min-width: 0;
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .skill-detail__list i {
@@ -320,9 +327,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .skill-detail {
-    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
-  }
 }
 
 @media (max-width: 42rem) {

@@ -19,7 +19,7 @@
   --space-5: clamp(2.5rem, 1.5rem + 4vw, 6.5rem);
   --space-section: clamp(5rem, 3rem + 8vw, 11rem);
 
-  --content-width: 86rem;
+  --content-width: 100rem;
   --line-readable: 68ch;
   --transition-fast: 160ms ease;
   --motion-cover: 360ms;

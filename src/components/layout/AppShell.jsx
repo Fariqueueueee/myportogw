@@ -4,16 +4,16 @@ import StatusBadge from '../ui/StatusBadge.jsx'
 function AppShell({ activeItem, availability, children, isTransitioning, onHome }) {
   return (
     <div className={`app-shell portfolio-shell${isTransitioning ? ' is-transitioning' : ''}`}>
-      <BackgroundPattern className="portfolio-shell__pattern" density="wide" />
-      <span className="portfolio-shell__plane" aria-hidden="true" />
+      <BackgroundPattern className="portfolio-shell__pattern" density="wide" />~
       <span className="portfolio-shell__slash portfolio-shell__slash--one" aria-hidden="true" />
       <span className="portfolio-shell__slash portfolio-shell__slash--two" aria-hidden="true" />
+      <span className="portfolio-shell__slash portfolio-shell__slash--three" aria-hidden="true" />
 
       <header className="portfolio-header content-container">
         <button className="brand-control" type="button" onClick={onHome}>
           <span className="brand-control__mark" aria-hidden="true" />
           <span>
-            Rebel <i>/</i> Interface
+            Grace <i>/</i> Dev
           </span>
         </button>
 

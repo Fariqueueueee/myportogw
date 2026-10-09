@@ -10,7 +10,7 @@ export const navigationItems = [
     id: 'projects',
     label: 'Projects',
     number: '02',
-    descriptor: 'Selected work',
+    descriptor: 'Selected Projects',
     placeholder:
       'A curated collection of interface builds and creative engineering experiments will live here.',
   },
@@ -18,7 +18,7 @@ export const navigationItems = [
     id: 'skills',
     label: 'Skills',
     number: '03',
-    descriptor: 'Technical arsenal',
+    descriptor: 'Skills System',
     placeholder:
       'An expressive map of frontend, backend, database, and development-tool experience is coming next.',
   },
@@ -26,7 +26,7 @@ export const navigationItems = [
     id: 'about',
     label: 'About',
     number: '04',
-    descriptor: 'The human layer',
+    descriptor: 'About me',
     placeholder:
       'Background, interests, philosophy, and the personal journey behind the work will be introduced here.',
   },
@@ -34,7 +34,7 @@ export const navigationItems = [
     id: 'contact',
     label: 'Contact',
     number: '05',
-    descriptor: 'Open a channel',
+    descriptor: 'Contact me',
     placeholder:
       'Contact details and a validated frontend message form will be completed in the dedicated content step.',
   },

@@ -13,8 +13,7 @@ function HomeScreen({ profile, onNavigate }) {
 
       <div className="home-screen__copy">
         <div className="home-screen__eyebrow">
-          <p className="graphic-label">Portfolio / Signal 001</p>
-          <StatusBadge label={profile.role} />
+          
         </div>
 
         <StaggeredText
@@ -25,12 +24,12 @@ function HomeScreen({ profile, onNavigate }) {
         />
 
         <GraphicPanel variant="paper" rotation="left" className="home-screen__intro">
-          <p className="graphic-label graphic-label--dark">Mission statement</p>
+          <p className="graphic-label graphic-label--dark">Introduction</p>
           <p>{profile.introduction}</p>
         </GraphicPanel>
 
         <div className="home-screen__actions cluster">
-          <RebelButton onClick={() => onNavigate('projects')}>View projects</RebelButton>
+          <RebelButton onClick={() => onNavigate('projects')}>View My Projects</RebelButton>
           <RebelButton variant="secondary" onClick={() => onNavigate('contact')}>
             Start a conversation
           </RebelButton>

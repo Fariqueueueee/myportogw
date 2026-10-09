@@ -13,13 +13,11 @@ function ContactScreen({ profile }) {
 
       <header className="contact-hero">
         <div className="contact-hero__copy">
-          <p className="graphic-label">Open a channel / Direct request</p>
-          <p>Have a project, collaboration, or opportunity in mind? Get in touch.</p>
         </div>
         <StaggeredText
           id="contact-title"
           className="contact-hero__title"
-          lines={["Let's Build", 'Something', 'Interesting.']}
+          lines={["Let's", 'talk']}
           accentIndex={1}
         />
       </header>
@@ -36,7 +34,7 @@ function ContactScreen({ profile }) {
             {configuredEmail ? (
               <a href={`mailto:${profile.contactEmail.trim()}`}>{profile.contactEmail.trim()} ↗</a>
             ) : (
-              <p aria-disabled="true">Not configured</p>
+              <p aria-disabled="true">fariqarbia@gmail.com</p>
             )}
           </div>
 
@@ -62,12 +60,6 @@ function ContactScreen({ profile }) {
             ))}
           </ul>
 
-          <div className="contact-limitation">
-            <span aria-hidden="true">!</span>
-            <p>
-              Messages are validated by the contact API. A successful response confirms provider acceptance, not inbox delivery.
-            </p>
-          </div>
         </aside>
 
         <ContactForm />

@@ -41,8 +41,8 @@ function ProjectsScreen() {
 
       <header className="projects-hero">
         <div className="projects-hero__meta">
-          <p className="graphic-label">Selected work / Demo collection</p>
-          <p>Concept builds showing interface thinking, system design, and browser craft.</p>
+          
+          
         </div>
         <StaggeredText
           id="projects-title"
@@ -55,7 +55,7 @@ function ProjectsScreen() {
       <section className="featured-projects" aria-labelledby="featured-projects-title">
         <div className="projects-section-label">
           <p className="graphic-label">Featured selection</p>
-          <h2 id="featured-projects-title">Three lead signals</h2>
+          <h2 id="featured-projects-title">Three lead projects</h2>
         </div>
         <div className="featured-projects__grid">
           {featuredProjects.map((project, index) => (

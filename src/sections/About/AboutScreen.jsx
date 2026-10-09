@@ -16,13 +16,11 @@ function AboutScreen({ profile, content }) {
 
       <header className="about-hero">
         <div className="about-hero__copy">
-          <p className="graphic-label">The human layer / Editable profile</p>
-          <p>{content.statement}</p>
         </div>
         <StaggeredText
           id="about-title"
           className="about-hero__title"
-          lines={['About', 'The Work']}
+          lines={['About', 'me']}
           accentIndex={0}
         />
       </header>
@@ -43,10 +41,9 @@ function AboutScreen({ profile, content }) {
 
         <div className="about-introduction__content">
           <p className="graphic-label">Developer introduction</p>
-          <h2 id="about-introduction-title">{content.headline}</h2>
+          <h2 id="about-introduction-title">{profile.name}</h2>
           <div className="about-introduction__identity">
-            <strong>{profile.name}</strong>
-            <span>{profile.role}</span>
+            <strong>{profile.role}</strong>
           </div>
           <p>{content.biography}</p>
 
@@ -58,7 +55,7 @@ function AboutScreen({ profile, content }) {
           </div>
 
           <blockquote>
-            <span>Working philosophy</span>
+            <span>philosophy</span>
             <p>“{content.philosophy}”</p>
           </blockquote>
         </div>
@@ -67,10 +64,8 @@ function AboutScreen({ profile, content }) {
       <section className="about-journey" aria-labelledby="about-journey-title">
         <div className="about-section-heading">
           <div>
-            <p className="graphic-label">Editable narrative / No invented dates</p>
             <h2 id="about-journey-title">Developer journey</h2>
           </div>
-          <p>Select a stage to reveal its editing guidance.</p>
         </div>
         <JourneyTimeline entries={content.journey} />
       </section>
@@ -78,7 +73,6 @@ function AboutScreen({ profile, content }) {
       <section className="about-principles" aria-labelledby="about-principles-title">
         <div className="about-section-heading">
           <div>
-            <p className="graphic-label">How the work gets made</p>
             <h2 id="about-principles-title">Personal approach</h2>
           </div>
         </div>
