@@ -9,10 +9,16 @@ import {
 } from '../src/sections/Contact/contactForm.logic.js'
 
 test('client validation rejects empty and malformed contact values', () => {
-  const errors = validateContactValues({ name: '', email: 'invalid', message: ' ' })
+  const errors = validateContactValues({
+    name: '',
+    email: 'invalid',
+    tujuan: '',
+    message: ' ',
+  })
 
   assert.ok(errors.name)
   assert.ok(errors.email)
+  assert.ok(errors.tujuan)
   assert.ok(errors.message)
 })
 

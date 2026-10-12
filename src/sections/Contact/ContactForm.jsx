@@ -1,40 +1,28 @@
-import { useEffect, useRef, useState } from 'react'
-import { submitContact } from '../../services/contactApi.js'
+import { useRef, useState } from 'react'
 import {
   contactLimits,
   emptyContactValues,
   idleContactStatus,
-  mapServerFieldErrors,
-  normalizeContactPayload,
-  statusForContactError,
   validateContactField,
   validateContactValues,
 } from './contactForm.logic.js'
 
-const allFieldsTouched = Object.freeze({ name: true, email: true, message: true })
+const allFieldsTouched = Object.freeze({
+  name: true,
+  email: true,
+  tujuan: true,
+  message: true,
+})
 
-function ContactForm({ submitContactRequest = submitContact }) {
+function ContactForm() {
   const [values, setValues] = useState({ ...emptyContactValues })
   const [touched, setTouched] = useState({})
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState(idleContactStatus)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const formRef = useRef(null)
-  const mountedRef = useRef(true)
-  const requestControllerRef = useRef(null)
-  const isSubmittingRef = useRef(false)
-
-  useEffect(() => {
-    mountedRef.current = true
-
-    return () => {
-      mountedRef.current = false
-      requestControllerRef.current?.abort()
-    }
-  }, [])
 
   const focusFirstInvalidField = (fieldErrors) => {
-    const firstInvalidField = ['name', 'email', 'message']
+    const firstInvalidField = ['name', 'email', 'tujuan', 'message']
       .find((fieldName) => fieldErrors[fieldName])
 
     if (firstInvalidField) {
@@ -47,10 +35,13 @@ function ContactForm({ submitContactRequest = submitContact }) {
     setValues((current) => ({ ...current, [name]: value }))
 
     if (touched[name]) {
-      setErrors((current) => ({ ...current, [name]: validateContactField(name, value) }))
+      setErrors((current) => ({
+        ...current,
+        [name]: validateContactField(name, value),
+      }))
     }
 
-    if (!isSubmittingRef.current && status.type !== 'idle') {
+    if (status.type !== 'idle') {
       setStatus(idleContactStatus)
     }
   }
@@ -58,14 +49,14 @@ function ContactForm({ submitContactRequest = submitContact }) {
   const handleBlur = (event) => {
     const { name, value } = event.target
     setTouched((current) => ({ ...current, [name]: true }))
-    setErrors((current) => ({ ...current, [name]: validateContactField(name, value) }))
+    setErrors((current) => ({
+      ...current,
+      [name]: validateContactField(name, value),
+    }))
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-
-    // React state updates are asynchronous; the ref closes the same-tick duplicate window.
-    if (isSubmittingRef.current) return
 
     const nextErrors = validateContactValues(values)
     const hasErrors = Object.values(nextErrors).some(Boolean)
@@ -74,54 +65,29 @@ function ContactForm({ submitContactRequest = submitContact }) {
     setErrors(nextErrors)
 
     if (hasErrors) {
-      setStatus({ type: 'validation', message: 'Please check the highlighted fields.' })
+      setStatus({
+        type: 'validation',
+        message: 'Silakan periksa kembali data yang diisi.',
+      })
       focusFirstInvalidField(nextErrors)
       return
     }
 
-    const submittedPayload = normalizeContactPayload(values)
-    const submittedSignature = JSON.stringify(submittedPayload)
-    const controller = new AbortController()
+    const noWA = '6285111341621'
+    const teks = `Halo, saya *${values.name.trim()}*.
+Tujuan saya ingin *${values.tujuan.trim()}*.
 
-    isSubmittingRef.current = true
-    requestControllerRef.current = controller
-    setIsSubmitting(true)
-    setStatus({ type: 'submitting', message: 'Sending your message...' })
+Isi pesan:
+_${values.message.trim()}_
 
-    try {
-      await submitContactRequest(submittedPayload, { signal: controller.signal })
-      if (!mountedRef.current) return
+Email saya: *${values.email.trim()}*`
+    const url = `https://wa.me/${noWA}?text=${encodeURIComponent(teks)}`
 
-      setErrors({})
-      setTouched({})
-      setValues((current) => (
-        JSON.stringify(normalizeContactPayload(current)) === submittedSignature
-          ? { ...emptyContactValues }
-          : current
-      ))
-      setStatus({ type: 'accepted', message: 'Your message was accepted for delivery.' })
-    } catch (error) {
-      if (!mountedRef.current || error?.code === 'aborted') return
-
-      if (error?.code === 'validation') {
-        const serverFieldErrors = mapServerFieldErrors(error.fieldErrors)
-        setErrors((current) => ({ ...current, ...serverFieldErrors }))
-        setTouched((current) => ({
-          ...current,
-          ...Object.fromEntries(Object.keys(serverFieldErrors).map((field) => [field, true])),
-        }))
-        setStatus(statusForContactError(error))
-        focusFirstInvalidField(serverFieldErrors)
-      } else {
-        setStatus(statusForContactError(error))
-      }
-    } finally {
-      if (requestControllerRef.current === controller) {
-        requestControllerRef.current = null
-      }
-      isSubmittingRef.current = false
-      if (mountedRef.current) setIsSubmitting(false)
-    }
+    window.open(url, '_blank', 'noopener,noreferrer')
+    setStatus({
+      type: 'accepted',
+      message: 'Pesan WhatsApp sudah dibuka. Silakan periksa lalu kirim pesannya.',
+    })
   }
 
   const fieldDescription = (name, hintId) => {
@@ -135,19 +101,18 @@ function ContactForm({ submitContactRequest = submitContact }) {
       className="contact-form"
       noValidate
       onSubmit={handleSubmit}
-      aria-busy={isSubmitting}
       ref={formRef}
     >
       <div className="contact-form__heading">
         <div>
-          <p className="graphic-label">Secure API channel</p>
-          <h2>Start the signal.</h2>
+          <p className="graphic-label">WhatsApp channel</p>
+          <h2>Start Contact Me</h2>
         </div>
         <span aria-hidden="true">05</span>
       </div>
 
       <div className="contact-field">
-        <label htmlFor="contact-name">Full name <span aria-hidden="true">*</span></label>
+        <label htmlFor="contact-name">Nama lengkap <span aria-hidden="true">*</span></label>
         <input
           id="contact-name"
           name="name"
@@ -162,7 +127,7 @@ function ContactForm({ submitContactRequest = submitContact }) {
           onBlur={handleBlur}
         />
         <div className="contact-field__meta">
-          <span id="name-hint">Up to {contactLimits.name} characters</span>
+          <span id="name-hint">Maksimal {contactLimits.name} karakter</span>
           <span>{values.name.length}/{contactLimits.name}</span>
         </div>
         {errors.name && <p className="contact-field__error" id="name-error">{errors.name}</p>}
@@ -185,14 +150,37 @@ function ContactForm({ submitContactRequest = submitContact }) {
           onBlur={handleBlur}
         />
         <div className="contact-field__meta">
-          <span id="email-hint">Use an address where a reply can reach you</span>
+          <span id="email-hint">Gunakan email yang bisa dihubungi</span>
           <span>{values.email.length}/{contactLimits.email}</span>
         </div>
         {errors.email && <p className="contact-field__error" id="email-error">{errors.email}</p>}
       </div>
 
       <div className="contact-field">
-        <label htmlFor="contact-message">Message <span aria-hidden="true">*</span></label>
+        <label htmlFor="contact-purpose">Tujuan <span aria-hidden="true">*</span></label>
+        <input
+          id="contact-purpose"
+          name="tujuan"
+          type="text"
+          value={values.tujuan}
+          maxLength={contactLimits.tujuan}
+          required
+          aria-invalid={Boolean(errors.tujuan)}
+          aria-describedby={fieldDescription('tujuan', 'tujuan-hint')}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        <div className="contact-field__meta">
+          <span id="tujuan-hint">Contoh: kerja sama atau pembuatan website</span>
+          <span>{values.tujuan.length}/{contactLimits.tujuan}</span>
+        </div>
+        {errors.tujuan && (
+          <p className="contact-field__error" id="tujuan-error">{errors.tujuan}</p>
+        )}
+      </div>
+
+      <div className="contact-field">
+        <label htmlFor="contact-message">Pesan <span aria-hidden="true">*</span></label>
         <textarea
           id="contact-message"
           name="message"
@@ -206,15 +194,17 @@ function ContactForm({ submitContactRequest = submitContact }) {
           onBlur={handleBlur}
         />
         <div className="contact-field__meta">
-          <span id="message-hint">Share the project, opportunity, or idea</span>
+          <span id="message-hint">Jelaskan proyek, peluang, atau idemu</span>
           <span>{values.message.length}/{contactLimits.message}</span>
         </div>
-        {errors.message && <p className="contact-field__error" id="message-error">{errors.message}</p>}
+        {errors.message && (
+          <p className="contact-field__error" id="message-error">{errors.message}</p>
+        )}
       </div>
 
-      <button className="contact-form__submit" type="submit" disabled={isSubmitting}>
-        <span>{isSubmitting ? 'Sending...' : 'Send message'}</span>
-        <span aria-hidden="true">{isSubmitting ? '...' : '→'}</span>
+      <button className="contact-form__submit" type="submit">
+        <span>Kirim lewat WhatsApp</span>
+        <span aria-hidden="true">→</span>
       </button>
 
       <div
@@ -224,7 +214,6 @@ function ContactForm({ submitContactRequest = submitContact }) {
         role="status"
       >
         <p>{status.message}</p>
-        {status.detail && <p className="contact-form__status-detail">{status.detail}</p>}
       </div>
     </form>
   )

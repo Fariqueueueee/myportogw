@@ -3,10 +3,16 @@ import { isValidEmailAddress } from '../../utils/links.js'
 export const contactLimits = Object.freeze({
   name: 80,
   email: 254,
+  tujuan: 120,
   message: 1200,
 })
 
-export const emptyContactValues = Object.freeze({ name: '', email: '', message: '' })
+export const emptyContactValues = Object.freeze({
+  name: '',
+  email: '',
+  tujuan: '',
+  message: '',
+})
 
 export const idleContactStatus = Object.freeze({
   type: 'idle',
@@ -17,18 +23,24 @@ export function validateContactField(name, value) {
   const trimmedValue = value.trim()
 
   if (!trimmedValue) {
-    if (name === 'name') return 'Enter your name so the message has a clear introduction.'
-    if (name === 'email') return 'Enter an email address for a possible reply.'
-    return 'Add a message before sending.'
+    if (name === 'name') return 'Masukkan nama kamu.'
+    if (name === 'email') return 'Masukkan alamat email.'
+    if (name === 'tujuan') return 'Masukkan tujuan menghubungi.'
+    return 'Masukkan pesan sebelum mengirim.'
   }
 
   if (value.length > contactLimits[name]) {
-    const label = name === 'message' ? 'Message' : name === 'email' ? 'Email' : 'Name'
-    return `${label} must be ${contactLimits[name]} characters or fewer.`
+    const labels = {
+      name: 'Nama',
+      email: 'Email',
+      tujuan: 'Tujuan',
+      message: 'Pesan',
+    }
+    return `${labels[name]} maksimal ${contactLimits[name]} karakter.`
   }
 
   if (name === 'email' && !isValidEmailAddress(trimmedValue)) {
-    return 'Enter an email in a format like name@example.com.'
+    return 'Masukkan email dengan format seperti nama@contoh.com.'
   }
 
   return ''
@@ -38,6 +50,7 @@ export function validateContactValues(values) {
   return {
     name: validateContactField('name', values.name),
     email: validateContactField('email', values.email),
+    tujuan: validateContactField('tujuan', values.tujuan),
     message: validateContactField('message', values.message),
   }
 }
