@@ -12,7 +12,7 @@ export const about = {
   ],
   philosophy:
     "It's not about, where, when, or why. It's about who.",
-  profileImage: null,
+  profileImage: '/assets/images/profile.png',,
   cvPath: null,
   journey: [
     {
